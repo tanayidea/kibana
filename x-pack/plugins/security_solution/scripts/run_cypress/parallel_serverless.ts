@@ -426,6 +426,17 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
             } else {
               try {
                 result = await cypress.run({
+
+                  // {
+                  //   "reporterEnabled": "mochawesome, mocha-junit-reporter",
+                  //   "reporterOptions": {
+                  //     "html": false,
+                  //     "json": true,
+                  //     "mochaFile": "../../../target/kibana-security-solution/cypress/results/TEST-security-solution-cypress-[hash].xml",
+                  //     "overwrite": false,
+                  //     "reportDir": "../../../target/kibana-security-solution/cypress/results"
+                  //   }
+                  // }
                   browser: 'electron',
                   spec: filePath,
                   configFile: cypressConfigFilePath,
@@ -433,6 +444,21 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
                   reporterOptions: argv.reporterOptions,
                   headed: argv.headed as boolean,
                   config: {
+                    // reporter: '../../../node_modules/cypress-multi-reporters,../../../node_modules/@reportportal/agent-js-cypress',
+                    reporter: '../../../node_modules/@reportportal/agent-js-cypress',
+                    reporterOptions: {
+                      endpoint: 'https://35.226.254.46/api/v1',
+                      apiKey: process.env.RP_API_KEY,
+                      launch: '',
+                      mode: 'DEFAULT',
+                      skippedIssue: false,
+                      // debug: true,
+                      launchId: process.env.LAUNCH_ID,
+                      autoMerge: true,
+                      parallel: true,
+                      project: 'test-development',
+                      // configFile: './cypress/reporter_config.json',
+                    },
                     e2e: {
                       baseUrl: environment.kb_url,
                     },
@@ -470,6 +496,7 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
           throw createFailError('Not all tests passed');
         }
       }
+      log.info("RUNTIME COMPLETED!!!!!!!!")
     },
     {
       flags: {

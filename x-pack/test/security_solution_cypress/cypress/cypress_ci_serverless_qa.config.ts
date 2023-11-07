@@ -7,6 +7,7 @@
 
 import { defineCypressConfig } from '@kbn/cypress-config';
 import { esArchiver } from './support/es_archiver';
+const registerReportPortalPlugin = require('@reportportal/agent-js-cypress/lib/plugin');
 
 // eslint-disable-next-line import/no-default-export
 export default defineCypressConfig({
@@ -18,7 +19,7 @@ export default defineCypressConfig({
   env: {
     grepFilterSpecs: true,
     grepOmitFiltered: true,
-    grepTags: '@serverless --@brokenInServerless --@skipInServerless --@brokenInServerlessQA',
+    grepTags: '@serverlessQA --@brokenInServerless --@skipInServerless --@brokenInServerlessQA',
   },
   execTimeout: 300000,
   pageLoadTimeout: 300000,
@@ -28,7 +29,7 @@ export default defineCypressConfig({
   retries: {
     runMode: 1,
   },
-  screenshotsFolder: '../../../target/kibana-security-solution/cypress/screenshots',
+  screenshotsFolder: '../../../target/kibana-security-solution/cypress/screenshots', 
   trashAssetsBeforeRuns: false,
   video: false,
   videosFolder: '../../../../target/kibana-security-solution/cypress/videos',
@@ -41,6 +42,7 @@ export default defineCypressConfig({
     specPattern: './cypress/e2e/**/*.cy.ts',
     setupNodeEvents(on, config) {
       esArchiver(on, config);
+      registerReportPortalPlugin(on, config);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@cypress/grep/src/plugin')(config);
       return config;
