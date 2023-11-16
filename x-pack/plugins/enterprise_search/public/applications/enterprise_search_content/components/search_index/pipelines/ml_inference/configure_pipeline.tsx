@@ -35,12 +35,10 @@ import { IndexViewLogic } from '../../index_view_logic';
 
 import { InferenceConfiguration } from './inference_config';
 import { EMPTY_PIPELINE_CONFIGURATION, MLInferenceLogic } from './ml_inference_logic';
-import { MlModelSelectOption } from './model_select_option';
 import { PipelineSelectOption } from './pipeline_select_option';
 import { TextExpansionCallOut } from './text_expansion_callout';
-import { MODEL_REDACTED_VALUE, MODEL_SELECT_PLACEHOLDER } from './utils';
+import { ModelSelect } from './model_select';
 
-const MODEL_SELECT_PLACEHOLDER_VALUE = 'model_placeholder$$';
 const PIPELINE_SELECT_PLACEHOLDER_VALUE = 'pipeline_placeholder$$';
 
 const CHOOSE_EXISTING_LABEL = i18n.translate(
@@ -61,14 +59,13 @@ export const ConfigurePipeline: React.FC = () => {
     addInferencePipelineModal: { configuration },
     formErrors,
     existingInferencePipelines,
-    supportedMLModels,
   } = useValues(MLInferenceLogic);
   const { selectExistingPipeline, setInferencePipelineConfiguration } =
     useActions(MLInferenceLogic);
   const { ingestionMethod } = useValues(IndexViewLogic);
   const { indexName } = useValues(IndexNameLogic);
 
-  const { existingPipeline, modelID, pipelineName } = configuration;
+  const { pipelineName } = configuration;
 
   useEffect(() => {
     setInferencePipelineConfiguration({
@@ -79,21 +76,6 @@ export const ConfigurePipeline: React.FC = () => {
 
   const nameError = formErrors.pipelineName !== undefined && pipelineName.length > 0;
 
-  const modelOptions: Array<EuiSuperSelectOption<string>> = [
-    {
-      disabled: true,
-      inputDisplay:
-        existingPipeline && pipelineName.length > 0
-          ? MODEL_REDACTED_VALUE
-          : MODEL_SELECT_PLACEHOLDER,
-      value: MODEL_SELECT_PLACEHOLDER_VALUE,
-    },
-    ...supportedMLModels.map((model) => ({
-      dropdownDisplay: <MlModelSelectOption model={model} />,
-      inputDisplay: model.model_id,
-      value: model.model_id,
-    })),
-  ];
   const pipelineOptions: Array<EuiSuperSelectOption<string>> = [
     {
       disabled: true,
@@ -304,23 +286,7 @@ export const ConfigurePipeline: React.FC = () => {
                 )}
                 fullWidth
               >
-                <EuiSuperSelect
-                  data-telemetry-id={`entSearchContent-${ingestionMethod}-pipelines-configureInferencePipeline-selectTrainedModel`}
-                  fullWidth
-                  hasDividers
-                  disabled={inputsDisabled}
-                  itemLayoutAlign="top"
-                  onChange={(value) =>
-                    setInferencePipelineConfiguration({
-                      ...configuration,
-                      inferenceConfig: undefined,
-                      modelID: value,
-                      fieldMappings: undefined,
-                    })
-                  }
-                  options={modelOptions}
-                  valueOfSelected={modelID === '' ? MODEL_SELECT_PLACEHOLDER_VALUE : modelID}
-                />
+                <ModelSelect />
               </EuiFormRow>
               <InferenceConfiguration />
             </EuiForm>

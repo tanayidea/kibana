@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiTextColor, EuiTitle } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiRadio, EuiTextColor, EuiTitle } from '@elastic/eui';
 
 import {
   getMlModelTypesForModelConfig,
@@ -20,36 +20,51 @@ import { getMLType, getModelDisplayTitle } from '../../../shared/ml_inference/ut
 import { TrainedModelHealth } from '../ml_model_health';
 import { MLModelTypeBadge } from '../ml_model_type_badge';
 
-export interface MlModelSelectOptionProps {
+export interface ModelSelectOptionProps {
   model: TrainedModel;
+  label: string;
+  checked?: 'on';
 }
-export const MlModelSelectOption: React.FC<MlModelSelectOptionProps> = ({ model }) => {
+
+export const ModelSelectOption: React.FC<ModelSelectOptionProps> = ({ model, checked }) => {
   const type = getMLType(getMlModelTypesForModelConfig(model));
   const title = getModelDisplayTitle(type);
+
   return (
-    <EuiFlexGroup direction="column" gutterSize="xs">
-      <EuiFlexItem>
-        <EuiTitle size="xs">
-          <h4>{title ?? model.model_id}</h4>
-        </EuiTitle>
+    <EuiFlexGroup alignItems='center'>
+      <EuiFlexItem grow={false}>
+        <EuiRadio
+          id={model.model_id}
+          checked={checked === 'on'}
+          onChange={() => null}
+        />
       </EuiFlexItem>
       <EuiFlexItem>
-        <EuiFlexGroup gutterSize="s" alignItems="center" justifyContent="flexEnd">
-          {title && (
-            <EuiFlexItem>
-              <EuiTextColor color="subdued">{model.model_id}</EuiTextColor>
-            </EuiFlexItem>
-          )}
-          <EuiFlexItem grow={false}>
-            <TrainedModelHealth
-              modelState={parseModelStateFromStats(model)}
-              modelStateReason={parseModelStateReasonFromStats(model)}
-            />
+        <EuiFlexGroup direction="column" gutterSize="xs">
+          <EuiFlexItem>
+            <EuiTitle size="xs">
+              <h4>{title ?? model.model_id}</h4>
+            </EuiTitle>
           </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup gutterSize="xs">
-              <EuiFlexItem>
-                <MLModelTypeBadge type={type} />
+          <EuiFlexItem>
+            <EuiFlexGroup gutterSize="s" alignItems="center" justifyContent="flexEnd">
+              {title && (
+                <EuiFlexItem>
+                  <EuiTextColor color="subdued">{model.model_id}</EuiTextColor>
+                </EuiFlexItem>
+              )}
+              <EuiFlexItem grow={false}>
+                <TrainedModelHealth
+                  modelState={parseModelStateFromStats(model)}
+                  modelStateReason={parseModelStateReasonFromStats(model)}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup gutterSize="xs">
+                  <EuiFlexItem>
+                    <MLModelTypeBadge type={type} />
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
