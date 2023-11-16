@@ -35,9 +35,9 @@ import { IndexViewLogic } from '../../index_view_logic';
 
 import { InferenceConfiguration } from './inference_config';
 import { EMPTY_PIPELINE_CONFIGURATION, MLInferenceLogic } from './ml_inference_logic';
+import { ModelSelect } from './model_select';
 import { PipelineSelectOption } from './pipeline_select_option';
 import { TextExpansionCallOut } from './text_expansion_callout';
-import { ModelSelect } from './model_select';
 
 const PIPELINE_SELECT_PLACEHOLDER_VALUE = 'pipeline_placeholder$$';
 

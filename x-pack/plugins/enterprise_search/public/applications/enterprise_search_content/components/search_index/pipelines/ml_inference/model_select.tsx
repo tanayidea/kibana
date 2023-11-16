@@ -5,15 +5,23 @@
  * 2.0.
  */
 
-import { EuiSelectable } from '@elastic/eui';
 import React from 'react';
-import { MLInferenceLogic } from './ml_inference_logic';
+
 import { useActions, useValues } from 'kea';
+
+import { EuiSelectable } from '@elastic/eui';
+
 import { TrainedModel } from '../../../../api/ml_models/ml_trained_models_logic';
+
+import { MLInferenceLogic } from './ml_inference_logic';
+
 import { ModelSelectOption, ModelSelectOptionProps } from './model_select_option';
 
 export const ModelSelect: React.FC = () => {
-  const { supportedMLModels, addInferencePipelineModal: { configuration } } = useValues(MLInferenceLogic);
+  const {
+    supportedMLModels,
+    addInferencePipelineModal: { configuration },
+  } = useValues(MLInferenceLogic);
   const { setInferencePipelineConfiguration } = useActions(MLInferenceLogic);
 
   const getSelectableModels = (models: TrainedModel[]): ModelSelectOptionProps[] => {
@@ -32,19 +40,17 @@ export const ModelSelect: React.FC = () => {
       modelID: selectedOption?.model.model_id ?? '',
       fieldMappings: undefined,
     });
-  }
+  };
 
   const renderIndexOption = (option: ModelSelectOptionProps) => {
-    return (
-      <ModelSelectOption {...option} />
-    );
+    return <ModelSelectOption {...option} />;
   };
-  
+
   return (
     <>
       <EuiSelectable
         options={getSelectableModels(supportedMLModels)}
-        singleSelection='always'
+        singleSelection="always"
         listProps={{
           bordered: true,
           rowHeight: 60,
