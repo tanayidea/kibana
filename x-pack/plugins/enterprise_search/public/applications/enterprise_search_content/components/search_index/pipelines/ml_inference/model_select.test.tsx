@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import { setMockValues } from '../../../../../__mocks__/kea_logic';
+import { setMockActions, setMockValues } from '../../../../../__mocks__/kea_logic';
 
 import React from 'react';
 
@@ -34,12 +34,11 @@ describe('ModelSelect', () => {
     jest.clearAllMocks();
     setMockValues(DEFAULT_VALUES);
   });
-  it('renders without selected model', () => {
+  it('renders without any selected model', () => {
     const wrapper = mount(<ModelSelect />);
     expect(wrapper.find(ModelSelectOption).length).toBe(3);
-    wrapper
-      .find(ModelSelectOption)
-      .forEach((option) => expect(option.prop('checked')).toBeUndefined());
+    expect(wrapper.find(ModelSelectOption).at(0).prop('label')).toBe('model_1');
+    expect(wrapper.find(ModelSelectOption).at(0).prop('checked')).toBeUndefined();
   });
   it('renders with a selected model', () => {
     setMockValues({
@@ -53,5 +52,16 @@ describe('ModelSelect', () => {
     const wrapper = mount(<ModelSelect />);
     expect(wrapper.find(ModelSelectOption).length).toBe(3);
     expect(wrapper.find(ModelSelectOption).at(1).prop('checked')).toBe('on');
+  });
+  it('selecting an option updates model ID', () => {
+    const actions = {
+      setInferencePipelineConfiguration: jest.fn(),
+    }
+    setMockActions(actions);
+    const wrapper = mount(<ModelSelect />);
+    wrapper.find(ModelSelectOption).at(0).simulate('click');
+    expect(actions.setInferencePipelineConfiguration).toHaveBeenCalledWith(expect.objectContaining({
+      modelID: 'model_1',
+    }));
   });
 });
