@@ -31,13 +31,9 @@ export const ModelSelectOption: React.FC<ModelSelectOptionProps> = ({ model, che
   const title = getModelDisplayTitle(type);
 
   return (
-    <EuiFlexGroup alignItems='center'>
+    <EuiFlexGroup alignItems="center">
       <EuiFlexItem grow={false}>
-        <EuiRadio
-          id={model.model_id}
-          checked={checked === 'on'}
-          onChange={() => null}
-        />
+        <EuiRadio id={model.model_id} checked={checked === 'on'} onChange={() => null} />
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFlexGroup direction="column" gutterSize="xs">
