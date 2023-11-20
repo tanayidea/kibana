@@ -1,0 +1,14 @@
+{
+  "id": "bdm",
+  "version": "1.0.3",
+  "kibanaVersion": "kibana",
+  "owner": {
+    "name": "ideafoundation",
+    "githubTeam": ""
+  },
+  "description": "for bdm project",
+  "server": true,
+  "ui": true,
+  "requiredPlugins": ["navigation", "uiActions", "data"],
+  "optionalPlugins": []
+}

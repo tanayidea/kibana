@@ -1,0 +1,16 @@
+{
+  "name": "bdm",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "bootstrap": "yarn kbn bootstrap && yarn install",
+    "build": "yarn plugin-helpers build",
+    "dev": "yarn plugin-helpers dev",
+    "plugin-helpers": "node ../../scripts/plugin_helpers",
+    "kbn": "node ../../scripts/kbn"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.2",
+    "ws": "^8.14.1"
+  }
+}

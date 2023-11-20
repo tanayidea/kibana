@@ -1,0 +1,7 @@
+{
+  "prefix": "bdm",
+  "paths": {
+    "bdm": "."
+  },
+  "translations": ["translations/ja-JP.json"]
+}
